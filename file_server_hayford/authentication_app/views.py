@@ -1,30 +1,31 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserformAPI, UserRegisterAPI     #dev'ing of models  
+from .forms import UserSignUp, UserRegisterForm, signUser, passwordChangeView   #dev'ing of models  
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.core.mail import send_mail, BadHeaderError      #dev'ing of models
 from django.contrib.auth.forms import PasswordResetForm
 from django.template.loader import render_to_string
 from django.db.models.query_utils import Q
-from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.conf import settings
-# from .models import signUser
 from django.views.decorators.csrf import csrf_protect
-from Authentication.models import signUser
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from .tokens import account_activation_token
+
 
 # Create your views here.
 @csrf_protect
 def index(request):
-    return render(request, './filesystem/base.html')
+    return render(request, './filesystem/home.html')
 
 
 @csrf_protect
 def signin(request):
-    form = UserformAPI()
+    form = UserSignUp()
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
@@ -35,8 +36,8 @@ def signin(request):
             
             # return redirect('/')  #watch here again
         else:
-            form = UserformAPI()
-    return render(request, 'login.html', {'form': form})  
+            form = UserSignUp()
+    return render(request, 'authentication_app/login.html', {'form': form})  
     # return HttpResponse("Valid credentials.")
         
 
@@ -48,9 +49,9 @@ def signout(request):
         
 @csrf_protect
 def signup(request):
-    form = UserRegisterAPI()
+    form = UserRegisterForm()
     if request.method == 'POST':
-        form = UserRegisterAPI(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
             first_name = form.cleaned_data.get('firstname')
             last_name = form.cleaned_data.get('lastname')
@@ -60,9 +61,26 @@ def signup(request):
             user = signUser.objects.create_user(first_name = first_name, last_name = last_name, username = username, email= email, password = password)
             user.save()
     else:
-        form = UserRegisterAPI()
-    return render(request, 'register.html', {'form': form})
+        form = UserRegisterForm()
+    return render(request, 'authentication_app/signup.html', {'form': form})
 
+# check if
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = signUser.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, signUser.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_verified = True
+        user.is_active = True
+        user.save()
+        login(request, user)
+        return redirect('/')
+        
+    else:
+        return render(request, 'accounts/activation_invalid.html')
+    
 
 @csrf_protect
 def passwordChange(request):
@@ -74,7 +92,7 @@ def passwordChange(request):
 			if associated_users.exists():
 				for user in associated_users:
 					subject = "Password Reset Requested"
-					email_template_name = "templates/reset_mail.txt"
+					email_template_name = "authentication_app/password_reset/password_reset_email.html"
 					c = {
 					"email":user.email,
 					'domain':'127.0.0.1:8000',
@@ -106,16 +124,38 @@ def resetPage(request):
             newuser.save()
         except ValueError:
             return HttpResponse('Please go back!')
+        
     else:
-        form = UserRegisterAPI()
-    return render(request, 'reset_pages_template/reset_page.html')
+        form = UserRegisterForm()
+    return render(request, 'authentication_app/password_reset/password_reset_form.html')
 
 
 @csrf_protect
 def resetPageDone(request):
-     return render(request, 'reset_pages_template/reset_page_done.html')
+     return render(request, 'authentication_app/password_reset/password_reset_done.html')
 
 
 @csrf_protect
-def passwordChangeDone(request):
-     return render(request, 'reset_pages_template/password_change_done.html')
+def passwordChangeDone(request, uidb64, token):
+    try:
+        uid =force_str(urlsafe_base64_decode(uidb64))
+        user = signUser.objects.get(pf=uid)
+    except(signUser.DoesNotExist, TypeError, ValueError, OverflowError):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        if request.method == 'POST':
+            form = passwordChangeView(request.POST)
+            if form.is_valid():
+                new_password = form.cleaned_data.get('password')
+                user.set_password(new_password)
+                user.save()
+                user =authenticate(request, email=user.email, password=new_password)
+                login(request, user)
+                
+                return render(request, 'authentication_app/password_reset/password_reset_complete.html')
+        else:
+            form = passwordChangeView()
+        return render(request, 'authentication_app/password_reset/password_reset_confirm.html', {'form': form})
+    else:
+        return render(request, 'authentication_app/password_reset/404.html')
