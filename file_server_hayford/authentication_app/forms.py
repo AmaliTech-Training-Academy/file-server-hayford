@@ -33,7 +33,7 @@ class passwordChangeView(forms.ModelForm):
 
 
 class resetPassword(forms.ModelForm):
-    email = forms.EmailField(max_length=200)
+    email = forms.EmailField(max_length=244)
     class Meta:
         model = signUser
         fields = ['email']
