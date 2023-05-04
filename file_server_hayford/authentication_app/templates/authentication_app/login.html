@@ -1,7 +1,17 @@
-{% extends './filesystem/base.html' %}
+{% extends 'filesystem/base.html' %}
 {% block title %}
-
+    Login
 {% endblock %}
-{% block title %}
-
+{% block content %}
+    <h2>Login</h2>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Log In</button>
+        <button type="submit"><a href="{% url 'authentication_app:reset_page' %}">Forget Password</button>
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}"/>
+        {% endif %}
+    </form>
+</form>
 {% endblock %}

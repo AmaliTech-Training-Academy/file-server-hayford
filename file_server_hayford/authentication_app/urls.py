@@ -1,13 +1,15 @@
 from django.urls import path
 from . import views
 
+app_name = 'authentication_app'
+
 urlpatterns = [
     
-    path('login/', views.signin, name='signin'),
-    path('logout/', views.signout, name='signout'),
+    path('login/', views.signin, name='login'),
+    path('logout/', views.signout, name='logout'),
     path('signup/', views.signup, name='signup'),
-    path('passwordChange/', views.passwordChange, name='password_change'),
-    path('passwordChange/done/', views.passwordChangeDone, name='password_change_done'),
-    path('resetPage/<uidb64>/<token>/', views.resetPage, name='reset_page'),
-    path('resetPage/done/', views.resetPageDone, name='reset_page_done'),
+    path('activate/<str:uidb64>/<str:token>', views.activate, name='account_activate'),
+    path('reset/<uidb64>/<token>', views.reset_password_confirm, name='password_reset_confirm'),
+    path('password_reset/', views.password_Change, name='reset_page'),
+    path('password_reset/done/', views.resetPageDone, name='reset_page_done'),
 ]

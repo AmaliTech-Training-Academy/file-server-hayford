@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserSignUp, UserRegisterForm, signUser, passwordChangeView   #dev'ing of models  
+from .forms import UserSignUp, LoginForm, signUser, passwordChangeView   #dev'ing of models  
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.core.mail import send_mail, BadHeaderError      #dev'ing of models
@@ -15,7 +15,9 @@ from django.views.decorators.csrf import csrf_protect
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .tokens import account_activation_token
-
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.html import strip_tags
+from django.urls import reverse_lazy
 
 # Create your views here.
 @csrf_protect
@@ -23,48 +25,36 @@ def index(request):
     return render(request, './filesystem/home.html')
 
 
-@csrf_protect
-def signin(request):
-    form = UserSignUp()
-    if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
-        user = authenticate(request, email = email, password = password)
-        login(request, user)
-        if user == None:
-            return HttpResponse("Invalid credentials.")
-            
-            # return redirect('/')  #watch here again
-        else:
-            form = UserSignUp()
-    return render(request, 'authentication_app/login.html', {'form': form})  
-    # return HttpResponse("Valid credentials.")
-        
-
-
-def signout(request):
-    logout(request)
-    return redirect('/')
-    
-        
+# @__cached__(1 * 60)
 @csrf_protect
 def signup(request):
-    form = UserRegisterForm()
+    form = UserSignUp
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
+        form = UserSignUp(request.POST)
         if form.is_valid():
-            first_name = form.cleaned_data.get('firstname')
-            last_name = form.cleaned_data.get('lastname')
-            username = form.cleaned_data.get('username')
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
-            user = signUser.objects.create_user(first_name = first_name, last_name = last_name, username = username, email= email, password = password)
+            user = signUser.objects.create_user(email= email, password = password)
+            user.is_active = False
             user.save()
+
+            current_site = get_current_site(request)
+            message=render_to_string('authentication_app/account_activation.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            message = strip_tags(message)
+            mail_subject = 'Activate your account.'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [user.email]
+            send_mail( mail_subject, message, email_from, recipient_list )
+            return render(request, 'authentication_app/email_verification.html')
     else:
-        form = UserRegisterForm()
+        form = UserSignUp()
     return render(request, 'authentication_app/signup.html', {'form': form})
 
-# check if
 def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -79,11 +69,68 @@ def activate(request, uidb64, token):
         return redirect('/')
         
     else:
-        return render(request, 'accounts/activation_invalid.html')
+        return render(request, 'accounts/activation_404.html')
+
+@csrf_protect
+def signin(request):
+    form = LoginForm(data=request.POST)
+    next_url = request.GET.get('next', '')
+    if request.method == 'POST':
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request=request, email=email, password=password)
+            
+            if user is not None:
+                login(request, user)
+                if next_url:
+                    return redirect(next_url)
+                else:
+                    return redirect(reverse_lazy('filesystem:file_list'))
+            else:
+                return render(request, 'authentication_app/login.html',  {'form': form, 'error': 'Invalid login credentials', 'next': next_url}) 
+                
+    return render(request, 'authentication_app/login.html', {'form': form, 'next': next_url})
+
+
+# def signin(request):
+#     form = LoginForm(data=dict(request.POST))
+#     next_url = request.GET.get('next', '')
+#     if request.method == 'POST':
+#         form = LoginForm(data=dict(request.POST))
+#         if form.is_valid():
+#             email = form.cleaned_data.get('email')
+#             password = form.cleaned_data.get('password')
+#             user = authenticate(request=request, email=email, password=password)
+            
+#             if user is not None:
+#                 login(request, user)
+#                 if next_url:
+#                     return redirect(next_url)
+#                 else:
+#                     return redirect('filesystem:file_list')
+#             else:
+#               return render(request, 'authentication_app/login.html',  {'form': form, 'error': 'Invalid login credentials', 'next': next_url}) 
+                
+#     return render(request, 'authentication_app/login.html', {'form': form, 'next': next_url})
+
+
+
+    
+
+
+def signout(request):
+    logout(request)
+    return redirect('/')
+    
+
+# check if
+
     
 
 @csrf_protect
-def passwordChange(request):
+def password_Change(request):
 	if request.method == "POST":
 		password_reset_form = PasswordResetForm(request.POST)
 		if password_reset_form.is_valid():
@@ -109,7 +156,7 @@ def passwordChange(request):
 						return HttpResponse('Invalid header found.')
 					return redirect ("passwordChange/done/")                     
 	password_reset_form = PasswordResetForm()
-	return render(request, 'reset_pages_template/password_change.html', {'password_reset_form':password_reset_form })
+	return render(request, 'authentication_app/password_reset/password_change.html', {'password_reset_form':password_reset_form })
     
 #intialization function depending on settings
 
@@ -136,7 +183,7 @@ def resetPageDone(request):
 
 
 @csrf_protect
-def passwordChangeDone(request, uidb64, token):
+def reset_password_confirm(request, uidb64, token):
     try:
         uid =force_str(urlsafe_base64_decode(uidb64))
         user = signUser.objects.get(pf=uid)

@@ -23,7 +23,7 @@ class SignUserManager(BaseUserManager):
             raise ValueError('An Error Occured Please Try Again')
 
 class signUser(AbstractUser):
-    username = models.CharField(max_length = 200, unique=True)
+    username = models.CharField(max_length = 200)
     email = models.EmailField(unique=True)
 
     is_active = models.BooleanField(default=True)

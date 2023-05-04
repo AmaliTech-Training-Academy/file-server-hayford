@@ -4,14 +4,22 @@ from django.urls import reverse
 # Create your models here.
 class Book(models.Model):
     title = models.CharField(max_length=100)
-    author = models.CharField(max_length=100)
-    file = models.FileField(upload_to='books/pdfs/')
-    is_published = models.DateField(default=True)
+    description = models.TextField()
+    file = models.FileField(models.FileField(upload_to='files'))
+    downloads = models.IntegerField(default=0)
+    emails_sent = models.IntegerField(default=0)
+    thumbnail = models.FileField(upload_to='thumbnail/', null=True, blank=True)
+                            
 
-    # is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title
     
     def get_absolute_url(self):
       return reverse('filesystem:file_list', kwargs={'pk': self.pk, 'slug': self.slug })
+    
+class FileSearch(models.Model):
+   name = models.CharField(max_length=200)
+
+   def search(self, query):
+      return Book.objects.filter(title_icontains=query)

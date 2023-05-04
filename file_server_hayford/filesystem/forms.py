@@ -4,4 +4,4 @@ from .models import Book
 class BookForm(forms.ModelForm):
     class Meta:
         model=Book
-        fields=('title', 'author', 'pdf', 'is_published')
+        fields=('title', 'description', 'file', 'downloads', 'emails_sent', 'thumbnail')

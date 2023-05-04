@@ -3,22 +3,13 @@ from .models import signUser
 from django import forms
 from .validator import PasswordValidator
 
+
 class UserSignUp(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
-    class Meta:
-        model = signUser
-        fields = ['email']
-        
-
-
-class UserRegisterForm(forms.ModelForm):
-    firstname = forms.CharField(max_length=30, required=True)
-    lastname = forms.CharField(max_length=30, required=True)
     password = forms.CharField(widget=forms.PasswordInput, required=True)
     password2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password', required=True)
     class Meta:
         model = signUser
-        fields = ['firstname', 'lastname', 'username', 'email', 'password']
+        fields = [ 'email', 'password']
     def clean_password2(self):
         password = self.cleaned_data.get('password')
         password2 = self.cleaned_data.get('password2')
@@ -39,8 +30,15 @@ class UserRegisterForm(forms.ModelForm):
             user.save()
         return user    
 
-class StudentForm(forms.ModelForm):
+
+class LoginForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
+    class Meta:
+        model = signUser
+        fields = ['email']
+        
+
+
 
 
 class passwordChangeView(forms.ModelForm):
