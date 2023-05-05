@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'authentication_app.signUser'
+LOGIN_URL = ''
+AUTH_USER_MODEL = 'authentication_app.CustomUser'
 
 # Application definition
 

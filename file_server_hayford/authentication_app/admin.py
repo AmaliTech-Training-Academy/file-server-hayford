@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.contrib import admin
-from .models import signUser
+from .models import CustomUser
 # Register your models here.
 
-admin.site.register(signUser)
+admin.site.register(CustomUser)
 
 class CustomUserAdmin(admin.ModelAdmin):
     pass
