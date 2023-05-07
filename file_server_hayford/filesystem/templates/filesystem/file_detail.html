@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-    <h2></h2>
-    <p>Description: {{}}</p>
+    <h1>{{file.title}}</h1>
+    <p>Description: {{file.Description }}</p>
     <a href="{% url 'filesystem:open_page' file.id %}">Download file</a>
 {% endblock %}

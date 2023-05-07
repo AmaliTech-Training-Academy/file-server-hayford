@@ -1,7 +1,13 @@
 from django import forms
-from .models import Book
+from .models import FileModels
 
-class BookForm(forms.ModelForm):
+class FileForm(forms.ModelForm):
     class Meta:
-        model=Book
-        fields=('title', 'description', 'file', 'downloads', 'emails_sent', 'thumbnail')
+        model=FileModels
+        fields=('title', 'description', 'file')
+
+
+class SendFileForm(forms.Form):
+    recipient_eamil = forms.EmailField(label='Recipient Email')
+    subject = forms. CharField(label='Subject')
+    message = forms.CharField(widget=forms.Textarea, label='Message')

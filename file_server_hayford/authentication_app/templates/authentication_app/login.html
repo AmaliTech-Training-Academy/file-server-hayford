@@ -6,11 +6,11 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Log In</button>
-        <button type="submit"><a href="{% url 'authentication_app:reset_page' %}">Forget Password</button>
+        <p><a href="{% url 'authentication_app:reset_page' %}">Forget Password</p>
         {% if next %}
             <input type="hidden" name="next" value="{{ next }}"/>
         {% endif %}
-        <p><a href="{% url 'signup' %}">Sign Up</a></p>
+        <p><a href="{% url 'authentication_app:signup' %}">Sign Up</a></p>
     </form>
 </form>
 {% endblock %}

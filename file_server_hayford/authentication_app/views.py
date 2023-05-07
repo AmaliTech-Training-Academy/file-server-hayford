@@ -19,6 +19,8 @@ from django.utils.html import strip_tags
 from django.contrib.auth.decorators import login_required
 from. models import CustomUser
 
+
+
 # Create your views here.
 @csrf_protect
 def index(request):
@@ -37,7 +39,6 @@ def signup(request):
             user = CustomUser.objects.create_user(email= email, password = password)
             user.is_active = False
             user.save()
-
             current_site = get_current_site(request)
             message=render_to_string('authentication_app/account_activation.html', {
                 'user': user,
@@ -54,6 +55,8 @@ def signup(request):
     else:
         form = UserSignUp()
     return render(request, 'authentication_app/signup.html', {'form': form})
+
+
 
 #account activation function
 def activate(request, uidb64, token):
@@ -72,8 +75,9 @@ def activate(request, uidb64, token):
     else:
         return render(request, 'authentication_app/activation_404.html')
 
-@csrf_protect
-@login_required
+
+
+# @csrf_protect
 def signin(request):
     form = LoginForm(data=request.POST)
     next_url = request.GET.get('next', '')
@@ -96,11 +100,11 @@ def signin(request):
 
 
 
-
 def signout(request):
     logout(request)
     return redirect('/')
      
+
 
 #intialization function depending on settings
 @csrf_protect
@@ -157,6 +161,7 @@ def resetPage(request):
 @csrf_protect
 def resetPageDone(request):
      return render(request, 'authentication_app/password_reset/password_reset_done.html')
+
 
 
 @csrf_protect

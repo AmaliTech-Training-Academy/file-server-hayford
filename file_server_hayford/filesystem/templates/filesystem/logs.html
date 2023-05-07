@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>File Logs</title>
+</head>
+<body>
+    {% for file in files %}
+        <h1>{{file.title}}</h1>
+        <p>Number of Download(s): {{ file.downloads }}</p>
+        <p>Number of Email(s) Sent: {{ file.email_sent }}</p>
+    {% endfor %}
+</body>
+</html>
