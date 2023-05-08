@@ -6,11 +6,13 @@
 {% endblock %}
 
 {% block content %}
-<h2>Sign Up</h2>
-<form method="POST" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="button_01" type="submit">Sign Up</button>
-    <p><a href="{% url 'authentication_app:login' %}">Log In</a></p>
-</form>
+<div>
+  <h2>Sign Up</h2>
+  <form method="POST" action="">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="button_01" type="submit">Sign Up</button>
+      <p><a href="{% url 'authentication_app:login' %}">Log In</a></p>
+  </form>
+</div>
 {% endblock %}
