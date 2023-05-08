@@ -19,8 +19,8 @@ def generate_thumbnail(file_path):
 
 
 def pdf_to_image(pdf_file):
-    with fitz.open(pdf_file) as document:
-        page = document.load_page(0)
-        pix = page.get_pixmap()
-        img_bytes = pix.getvalue()
+    with fitz.open(pdf_file) as doc:
+        page = doc.load_page(0)
+        pixmap = page.get_pixmap()
+        img_bytes = pixmap.tobytes()
     return img_bytes

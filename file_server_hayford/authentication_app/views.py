@@ -93,7 +93,7 @@ def signin(request):
                     return redirect(next_url)
                 else:
                     # return render(request, 'filesystem/home.html')
-                    return redirect('filesystem:home')
+                    return redirect('filesystem:upload_list')
             else:
                 return render(request, 'login.html',  {'form': form, 'error': 'Invalid login credentials', 'next': next_url})        
     return render(request, 'authentication_app/login.html', {'form': form, 'next': next_url})

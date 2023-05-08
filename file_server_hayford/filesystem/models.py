@@ -5,10 +5,10 @@ from django.urls import reverse
 class FileModels(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    file = models.FileField(models.FileField(upload_to='files'))
-    downloads = models.IntegerField(default=0)
+    file = models.FileField(upload_to='files')
+    downloads = models.PositiveIntegerField(default=0)
     emails_sent = models.IntegerField(default=0)
-    thumbnail = models.FileField(upload_to='thumbnail/', null=True, blank=True)
+    thumbnail = models.FileField(upload_to='thumbnails/', null=True, blank=True)
                             
 
 
@@ -16,7 +16,7 @@ class FileModels(models.Model):
         return self.title
     
     def get_absolute_url(self):
-      return reverse('filesystem:file_list', kwargs={'pk': self.pk, 'slug': self.slug })
+      return reverse('filesystem:file_detail', args=[str(self.id)])
     
 class FileSearch(models.Model):
    name = models.CharField(max_length=200)

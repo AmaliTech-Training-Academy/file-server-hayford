@@ -1,0 +1,47 @@
+{% extends 'filesystem/base.html' %}
+
+{% load static %}
+{% block content %}
+    <h3>
+        <a href="{% url 'filesystem:search' %}">Search files</a>
+    </h3>
+    {% if user.is_superuser %}
+        <a href="{% url 'filesystem:upload_file' %}">Upload files</a>
+    {% endif %}
+    <h1>List of files</h1>
+    <ul>
+        {% for file in files %}
+            <li>
+                <div class="">
+                    {% if file.file.name|lower|slice:'-3:' == 'pdf' %}
+                        <img src="{% static 'icons/pdf.png' %}">
+                    {% elif file.file.name|lower|slice:'-3:' == 'jpg' %}
+                        <img src="{% static 'icons/jpg.png' %}">
+                    {% elif file.file.name|lower|slice:'-3:' == 'doc' %}
+                        <img src="{% static 'icons/text.png' %}">
+                    {% elif file.file.name|lower|slice:'-3:' == 'xls' %}
+                        <img src="{% static 'icons/xls.png' %}">
+                    {% elif file.file.name|lower|slice:'-3:' == 'mp4' %}
+                        <img src="{% static 'icons/mp4.png' %}">
+                    {% elif file.file.name|lower|slice:'-3:' == 'mp3' %}
+                        <img src="{% static 'icons/mp3.png' %}">
+                    {% else %}
+                        <img src="{% static 'icons/default_icon.png' %}" alt="default thumbnail">
+                    {% endif %}
+                    {% if file.file.name|lower|slice:'-3:' == 'pdf' %}
+                        <a src="{% url 'filesystem:open_page' file.id %}">{{ file.title }}</a>
+                    {% else %}
+                        <a src="{% url 'filesystem:preview' file.id %}">{{ file.title }}</a>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if user.is_superuser %}
+        <a href="{% url 'filesystem:logs' %}">logs</a>
+    {% endif %}
+    <h3>
+        <a href="{% url 'authentication_app:logout' %}">log out</a>
+    </h3>
+{% endblock %}

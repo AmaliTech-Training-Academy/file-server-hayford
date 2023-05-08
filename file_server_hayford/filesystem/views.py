@@ -1,4 +1,3 @@
-from typing import Any, Dict
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import FileForm, SendFileForm
@@ -13,9 +12,6 @@ from django.utils. decorators import method_decorator
 from django.views.generic import ListView, DetailView
 
 # Create your views here.
-def home(request):
-    return render(request, 'filsystem/home.html')
-
 # def upload(request):
 #     if request.method == 'POST':
 #         file = request.FILES['files']
@@ -34,16 +30,16 @@ def home(request):
 #     return render(request, 'filesystem/book_list.html')
 
 
-@login_required
+# @login_required
 def upload_file(request):
-    user= CustomUser.objects.get(pk=request.user.uk)
+    user= CustomUser.objects.get(pk=request.user.pk)
     if user.is_superuser:
         if request.method =="POST":
             form = FileForm(request.POST, request.FILES)
             if form.is_valid():
                 file = form.save()
-                if file.file.name.lower().endswidth('.pdf'):
-                    file= form.save()
+                if file.file.name.lower().endswith('.pdf'):
+                    file = form.save()
                     file.user = request.user
                     file_path = file.file.path
                     thumbnail = generate_thumbnail(file_path)
@@ -52,11 +48,11 @@ def upload_file(request):
                 else:
                     form.save()
                 return redirect('filesystem:upload_list')
-            else:
-                form = FileForm()
-                return render(request, 'filesystem/upload_file.html', {'form': form}) 
         else:
-            return HttpResponseForbidden('<h1>You are not authorised to view thsi page</h1>')
+            form = FileForm()
+        return render(request, 'filesystem/upload_file.html', {'form': form}) 
+    else:
+        return HttpResponseForbidden('<h1>You are not authorised to view this page</h1>')
 
 
 
@@ -64,7 +60,7 @@ def upload_file(request):
 def download_file(request, file_id):
     file = FileModels.objects.get(pk=file_id)
     response = FileResponse(file.file, as_attachment=True)
-    file_download += 1
+    file.downloads += 1
     file.save()
     return response
 
@@ -107,6 +103,7 @@ class FileListView(ListView):
 
 
 
+@method_decorator(login_required, name='dispatch')
 class FileDetailView(DetailView):
     model = FileModels
     template_name = 'filesystem/file_detail.html'

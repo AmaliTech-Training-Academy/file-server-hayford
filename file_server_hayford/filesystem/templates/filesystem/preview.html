@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ file.title }}</h1>
+    {%if file.file.name|lower|slice:'-3:' == 'jpg' %}
+        <img width="500" height="500" src="{{ file.file.url }}" alt="{{ file.title }}">
+    {% elif file.file.name|lower|slice:'-3:' == 'mp4' %}
+        <video width="500" height="500" controls>
+            <source src="{{ file.file.url }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    {% elif file.file.name|lower|slice:'-3:' == 'mp3' %}
+        <audio controls>
+            <source src="{{ file.file.url }}">
+            Your browser does not support the audio tag.
+        </audio>
+    {%endif%}
+    <p>{{ file.description }}</p>
+    <li>
+        <button>
+            <a href="{% url 'filesystem:download_file' file_id=file.id %}">
+                 Download {{ file.title }}
+            </a>
+        </button>
+    </li>
+    <li>
+        <button>
+            <a href="{% url 'filesystem:send_file_email' file.id %}">
+                Send Email
+            </a>
+        </button>
+    </li>
+{% endblock %}

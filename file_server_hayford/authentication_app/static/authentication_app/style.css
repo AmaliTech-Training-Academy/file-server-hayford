@@ -1,0 +1,12 @@
+
+
+.button_01{
+    width: 21rem;
+    height: 3rem;
+    border-radius: 0.3rem;
+    margin: 0 2rem 2rem;
+    color: white;
+    border:none;
+    background: red;
+    cursor: pointer;
+}

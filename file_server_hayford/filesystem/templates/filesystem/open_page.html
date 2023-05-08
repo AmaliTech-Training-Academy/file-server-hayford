@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{file.title}}</h1>
+    <li>
+        {% comment %}<a href="{{file.file.url }}">{{ file.name }}</a>{% endcomment %}
+        {% if file.thumbnail %}
+            <img class="" alt="{{ file.title }}" src="{{ file.thumbnail.url }}"/>
+            {% endif %}
+    </li>
+    <p>{{ file.description }}</p>
+    <li>
+        <button>
+            <a href="{% url 'filesystem:preview' file.id %}" preview>Preview</a>
+        </button>
+    </li>
+    <li>
+        <button>
+            <a href="{% url 'filesystem:download_file' file.id %}" download>Download</a>
+        </button>
+    </li>
+    <li>
+        <button>
+            <a href="{% url 'filesystem:send_file_email' file.id %}" >Send Email</a>
+        </button>
+    </li>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form>
+        <input type="text" name="q">
+        <input type="submit" value="Search">
+    </form>
+    {% if files %}
+        <ul>
+        {% for file in files %}
+            <li>
+                <a href="{{ file.get_absolute_url }}">{{ file.title }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <div>No results found.</div>
+    {% endif %}
+{% endblock %}

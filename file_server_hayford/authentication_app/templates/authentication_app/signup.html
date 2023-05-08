@@ -1,11 +1,16 @@
 {% extends 'filesystem/base.html' %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static '/filesystem/style.css' %}">
+{% endblock %}
 
 {% block content %}
 <h2>Sign Up</h2>
 <form method="POST" action="">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Sign Up</button>
+    <button class="button_01" type="submit">Sign Up</button>
     <p><a href="{% url 'authentication_app:login' %}">Log In</a></p>
 </form>
 {% endblock %}
