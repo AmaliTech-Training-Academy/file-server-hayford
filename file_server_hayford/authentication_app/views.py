@@ -23,12 +23,6 @@ from. models import CustomUser
 
 # Create your views here.
 @csrf_protect
-def index(request):
-    return render(request, './filesystem/home.html')
-
-
-# @__cached__(1 * 60)
-@csrf_protect
 def signup(request):
     form = UserSignUp
     if request.method == 'POST':
@@ -77,7 +71,7 @@ def activate(request, uidb64, token):
 
 
 
-# @csrf_protect
+@csrf_protect
 def signin(request):
     form = LoginForm(data=request.POST)
     next_url = request.GET.get('next', '')
@@ -92,11 +86,10 @@ def signin(request):
                 if next_url:
                     return redirect(next_url)
                 else:
-                    # return render(request, 'filesystem/home.html')
                     return redirect('filesystem:upload_list')
             else:
-                return render(request, 'login.html',  {'form': form, 'error': 'Invalid login credentials', 'next': next_url})        
-    return render(request, 'authentication_app/login.html', {'form': form, 'next': next_url})
+                return render(request, 'authentication_app/login.html',  {'form': form, 'next': next_url})
+        return redirect('filesystem:upload_list')       
 
 
 

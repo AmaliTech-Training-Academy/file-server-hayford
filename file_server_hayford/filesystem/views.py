@@ -11,24 +11,6 @@ from django.conf import settings
 from django.utils. decorators import method_decorator
 from django.views.generic import ListView, DetailView
 
-# Create your views here.
-# def upload(request):
-#     if request.method == 'POST':
-#         file = request.FILES['files']
-#         # print(file.name)
-#         storage = FileSystemStorage()
-#         storage.save(file.name, file)
-#     return render(request, 'filesystem/upload.html')
-
-# def upload_book(request):
-#     if request.method == 'POST':
-#         form=BookForm
-#     return render(request, 'filesystem/upload_book.html')
-
-
-# def book_list(request):
-#     return render(request, 'filesystem/book_list.html')
-
 
 # @login_required
 def upload_file(request):
@@ -56,7 +38,7 @@ def upload_file(request):
 
 
 
-@login_required
+# @login_required
 def download_file(request, file_id):
     file = FileModels.objects.get(pk=file_id)
     response = FileResponse(file.file, as_attachment=True)
@@ -66,7 +48,7 @@ def download_file(request, file_id):
 
 
 
-@login_required
+# @login_required
 def send_file_email(request, file_id):
     file = get_object_or_404(FileModels, pk=file_id)
     if request.method == 'POST':
@@ -87,19 +69,20 @@ def send_file_email(request, file_id):
             file.emails_sent += 1
             file.save()
             return redirect('filesystem:upload_list')
-        else:
-            form = SendFileForm()
-        return render(request, 'filesystem/send_file.html', {'form': form, 'file': file})
+    else:
+        form = SendFileForm()
+    return render(request, 'filesystem/send_file.html', {'form': form, 'file': file})
     
 
 
-@method_decorator(login_required, name='dispatch')
+# @method_decorator(login_required, name='dispatch')
 class FileListView(ListView):
     model = FileModels
     template_name = 'filesystem/upload_list.html'
     context_object_name = 'files'
     ordering = ['title']
     paginate_by = 20
+
 
 
 
@@ -117,7 +100,7 @@ class FileDetailView(DetailView):
 
 @login_required
 def log(request):
-    user = CustomUser.objects.get(request.user.pk)
+    user = CustomUser.objects.get(pk=request.user.pk)
     if user.is_superuser:
         files = FileModels.objects.all()
         return render(request, 'filesystem/logs.html', {'files': files})
@@ -126,28 +109,28 @@ def log(request):
     
 
 
-@login_required
+# @login_required
 def search_view(request):
     query = request.GET.get('q')
     if query:
-        files = FileModels.objects.filter(title_icontains = query)
+        files = FileModels.objects.filter(title__icontains = query)
     else:
         files = []
     return render(request, 'filesystem/search.html', {'files': files})
 
 
 
-@login_required
+# @login_required
 def preview(request, file_id):
     file = get_object_or_404(FileModels, id=file_id)
-    if file.file.name.lower().endswith():
-        return FileResponse(open(file,file.path, 'rb'), content_type='application/pdf')
+    if file.file.name.lower().endswith('pdf'):
+        return FileResponse(open(file.file.path, 'rb'), content_type='application/pdf')
     else:
         return render(request, 'filesystem/preview.html', {'file': file})
     
 
 
-@login_required
+# @login_required
 def open_page(request, file_id):
     file = get_object_or_404(FileModels, id=file_id)
     return render(request, 'filesystem/open_page.html', {'file': file})

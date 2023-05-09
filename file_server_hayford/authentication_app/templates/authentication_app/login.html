@@ -1,16 +1,22 @@
 {% extends 'filesystem/base.html' %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static '/filesystem/style.css' %}">
+{% endblock %}
 
 {% block content %}
-    <h2>Login</h2>
-    <form method="POST" action="">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Log In</button>
-        <p><a href="{% url 'authentication_app:reset_page' %}">Forget Password</p>
-        {% if next %}
-            <input type="hidden" name="next" value="{{ next }}"/>
-        {% endif %}
-        <p><a href="{% url 'authentication_app:signup' %}">Sign Up</a></p>
-    </form>
-</form>
+    <div>
+        <h2>Login</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="button_01" type="submit">Log In</button>
+            <p><a href="{% url 'authentication_app:reset_page' %}">Forget Password</a></p>
+            {% if next %}
+                <input type="hidden" name="next" value="{{ next }}"/>
+            {% endif %}
+            <p>Don't have an account? <a href="{% url 'authentication_app:signup' %}">Sign Up</a></p>
+        </form>
+    </div>
 {% endblock %}

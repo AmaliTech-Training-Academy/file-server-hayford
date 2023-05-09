@@ -8,6 +8,6 @@ class FileForm(forms.ModelForm):
 
 
 class SendFileForm(forms.Form):
-    recipient_eamil = forms.EmailField(label='Recipient Email')
+    recipient_email = forms.EmailField(label='Recipient Email')
     subject = forms. CharField(label='Subject')
     message = forms.CharField(widget=forms.Textarea, label='Message')
