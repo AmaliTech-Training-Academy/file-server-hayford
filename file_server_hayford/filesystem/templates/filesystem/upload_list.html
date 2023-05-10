@@ -10,7 +10,8 @@
         <h3>
             <a href="{% url 'filesystem:search' %}">Search files</a>
         </h3>
-        <p>Hello, {{ user.username }}</p>
+        <p>Hello, {{ user.email }}</p>
+        <p><a href="{% url 'authentication_app:logout' %}">logout</a></p>
     </div>
     {% if user.is_superuser %}
         <a href="{% url 'filesystem:upload_file' %}">Upload files</a>
@@ -22,11 +23,11 @@
             <li>
                 {% if file.file.name|lower|slice:'-3:' == 'pdf' %}
                     <img src="{% static 'icons/pdf.png' %}">
-                {% elif file.file.name|lower|slice:'-3:' == 'jpg' %}
+                {% elif file.file.name|lower|slice:'-3:' == 'jpg' or file.file.name|lower|slice:'-3:' == 'jpeg' or file.file.name|lower|slice:'-3:' == 'png'%}
                     <img src="{% static 'icons/jpg.png' %}">
-                {% elif file.file.name|lower|slice:'-3:' == 'doc' %}
+                {% elif file.file.name|lower|slice:'-3:' == 'doc' or file.file.name|lower|slice:'-3:' == 'docx' %}
                     <img src="{% static 'icons/text.png' %}">
-                {% elif file.file.name|lower|slice:'-3:' == 'xls' %}
+                {% elif file.file.name|lower|slice:'-3:' == 'xls' or file.file.name|lower|slice:'-3:' == 'xlsx' %}
                     <img src="{% static 'icons/xls.png' %}">
                 {% elif file.file.name|lower|slice:'-3:' == 'mp4' %}
                     <img src="{% static 'icons/mp4.png' %}">
@@ -47,7 +48,5 @@
     {% if user.is_superuser %}
         <a href="{% url 'filesystem:logs' %}">logs</a>
     {% endif %}
-    <h3>
-        <a href="{% url 'authentication_app:logout' %}">log out</a>
-    </h3>
+    
 {% endblock %}

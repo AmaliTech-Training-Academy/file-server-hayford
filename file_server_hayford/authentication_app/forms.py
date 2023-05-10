@@ -32,11 +32,11 @@ class UserSignUp(forms.ModelForm):
         return user    
 
 
-class LoginForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
-    class Meta:
-        model = CustomUser
-        fields = ['email']
+# class LoginForm(forms.ModelForm):
+#     password = forms.CharField(widget=forms.PasswordInput)
+#     class Meta:
+#         model = CustomUser
+#         fields = ['email']
         
 
 class passwordChangeForm(forms.ModelForm):
@@ -49,8 +49,8 @@ class passwordChangeForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}), label="New Password")
     confirmPassword = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}), label="New Confirm Password")
 
-    class LoginForm(AuthenticationForm):
-        pass
+class LoginForm(AuthenticationForm):
+    pass
 
 
 # class resetPassword(forms.ModelForm):

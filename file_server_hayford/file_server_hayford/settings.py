@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-LOGIN_URL = ''
+LOGIN_URL = '/login/'
 AUTH_USER_MODEL = 'authentication_app.CustomUser'
 
 # Application definition
@@ -59,7 +59,7 @@ ROOT_URLCONF = 'file_server_hayford.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {

@@ -71,31 +71,33 @@ def activate(request, uidb64, token):
 
 
 
-@csrf_protect
+# @csrf_protect
 def signin(request):
     form = LoginForm(data=request.POST)
-    next_url = request.GET.get('next', '')
+    next_url = request.GET.get('next')
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():
-            email = form.cleaned_data.get('email')
+            username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            user = authenticate(email=email, password=password)
+            user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
                 if next_url:
-                    return redirect(next_url)
+                    return render(next_url)
                 else:
+                    # return render(request, 'filesystem/upload_list.html')
                     return redirect('filesystem:upload_list')
             else:
-                return render(request, 'authentication_app/login.html',  {'form': form, 'next': next_url})
-        return redirect('filesystem:upload_list')       
+                return render(request, 'login.html', {'form': form, 'error': 'Invalid login credentials', 'next': next_url})
+    return render(request, 'authentication_app/login.html', {'form': form, 'next': next_url})
+
 
 
 
 def signout(request):
     logout(request)
-    return redirect('/')
+    return redirect('/login/')
      
 
 

@@ -52,7 +52,7 @@ div{
 }
 
 
-input[type="password"], input[type="email"]{
+input[type="password"], input[type="email"], input{
     padding: 12px 8px;
     font-size: 12px;
     width: 100%;

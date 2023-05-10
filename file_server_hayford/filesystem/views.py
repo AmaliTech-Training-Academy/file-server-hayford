@@ -86,7 +86,7 @@ class FileListView(ListView):
 
 
 
-@method_decorator(login_required, name='dispatch')
+# @method_decorator(login_required, name='dispatch')
 class FileDetailView(DetailView):
     model = FileModels
     template_name = 'filesystem/file_detail.html'
@@ -125,6 +125,8 @@ def preview(request, file_id):
     file = get_object_or_404(FileModels, id=file_id)
     if file.file.name.lower().endswith('pdf'):
         return FileResponse(open(file.file.path, 'rb'), content_type='application/pdf')
+    elif file.file.name.lower().endswith(('jpg','jpeg', 'png', 'gif')):
+        return render(request, 'filesystem/preview.html', {'file': file})
     else:
         return render(request, 'filesystem/preview.html', {'file': file})
     
