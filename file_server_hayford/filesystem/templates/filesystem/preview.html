@@ -4,15 +4,15 @@
 <form action="" method="">
     <h1>{{ file.title }}</h1>
     {% if file.file.name|lower|slice:'-3:' == 'jpg' or file.file.name|lower|slice:'-3:' == 'jpeg' or file.file.name|lower|slice:'-3:' == 'png' or file.file.name|lower|slice:'-3:' == 'gif'  %}
-        <img width="500" height="500" src="{{ file.file.url }}" alt="{{ file.title }}">
+        <img width="500" height="500" src="/file_server_hayford{{ file.file.url }}" alt="{{ file.title }}">
     {% elif file.file.name|lower|slice:'-3:' == 'mp4' %}
         <video width="500" height="500" controls autoplay>
-            <source src="{{ file.file.url }}" type="video/mp4">
+            <source src="/file_server_hayford{{ file.file.url }}" type="video/mp4">
             Your browser does not support the video.
         </video>
     {% elif file.file.name|lower|slice:'-3:' == 'mp3' %}
         <audio controls autoplay>
-            <source src="{{ file.file.url }}" type="audio/mpeg">
+            <source src="/file_server_hayford{{ file.file.url }}" type="audio/mpeg">
             Your browser does not support the audio.
         </audio>
     {% endif %}
