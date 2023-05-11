@@ -1,21 +1,24 @@
 {% extends 'filesystem/base.html' %}
-
+{% load static %}
+{% block head %}
+  <link rel="stylesheet" href="{% static '/filesystem/index.css' %}">
+{% endblock %}
 {% block content %}
-<form action="" method="">
-    <h1>{{ file.title }}</h1>
-    {% if file.file.name|lower|slice:'-3:' == 'jpg' or file.file.name|lower|slice:'-3:' == 'jpeg' or file.file.name|lower|slice:'-3:' == 'png' or file.file.name|lower|slice:'-3:' == 'gif'  %}
-        <img width="500" height="500" src="/file_server_hayford{{ file.file.url }}" alt="{{ file.title }}">
+    <h1>{{ file.title }}</h1> 
+    {% if file.file.name|lower|slice:'-3:' == 'jpg' or file.file.name|lower|slice:'-4:' == 'jpeg' or file.file.name|lower|slice:'-3:' == 'png' or file.file.name|lower|slice:'-3:' == 'gif'  %}
+        <img width="500" height="500" src="{{ file.file.url }}" alt="{{ file.title }}">
     {% elif file.file.name|lower|slice:'-3:' == 'mp4' %}
         <video width="500" height="500" controls autoplay>
-            <source src="/file_server_hayford{{ file.file.url }}" type="video/mp4">
-            Your browser does not support the video.
+            <source src="{{ file.file.url }}" type="video/mp4">
+            Your browser does not support the videos.
         </video>
     {% elif file.file.name|lower|slice:'-3:' == 'mp3' %}
         <audio controls autoplay>
-            <source src="/file_server_hayford{{ file.file.url }}" type="audio/mpeg">
-            Your browser does not support the audio.
+            <source src="{{ file.file.url }}" type="audio/mpeg">
+            Your browser does not support the audios.
         </audio>
     {% endif %}
+
     <p>{{ file.description }}</p>
     <li>
         <button>
@@ -31,5 +34,5 @@
             </a>
         </button>
     </li>
-</form>
+
 {% endblock %}

@@ -6,12 +6,15 @@
 {% endblock %}
 
 {% block content %}
-    <div>
+    <div class="heading">
+        
         <h3>
             <a href="{% url 'filesystem:search' %}">Search files</a>
         </h3>
-        <p>Hello, {{ user.email }}</p>
-        <p><a href="{% url 'authentication_app:logout' %}">logout</a></p>
+        <div>
+            <p>Hello, <em class="user">{{ user.email }}</em></p>
+            <p><a href="{% url 'authentication_app:logout' %}">logout</a></p>
+        </div>
     </div>
     {% if user.is_superuser %}
         <a href="{% url 'filesystem:upload_file' %}">Upload files</a>

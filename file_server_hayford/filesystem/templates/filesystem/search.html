@@ -1,10 +1,19 @@
 {% extends 'filesystem/base.html' %}
+{% load static %}
 
+{% block head %}
+  <link rel="stylesheet" href="{% static '/filesystem/index.css' %}">
+{% endblock %}
 {% block content %}
-    <form>
-        <input type="text" placeholder="Search.." name="q">
-        <input type="submit" value="Search">
-    </form>
+    <div class="heading">
+        <form>
+            <input type="text" placeholder="Make your search here..." name="q">
+            <input type="submit" value="Search">
+        </form>   
+        <div>
+            <p><a href="{% url 'authentication_app:logout' %}">logout</a></p>
+        </div>
+    </div>
     {% if files %}
         <ul>
         {% for file in files %}

@@ -8,7 +8,7 @@ class FileModels(models.Model):
     file = models.FileField(upload_to='files')
     downloads = models.PositiveIntegerField(default=0)
     emails_sent = models.IntegerField(default=0)
-    thumbnail = models.FileField(upload_to='thumbnails/', null=True, blank=True)
+    thumbnail = models.FileField(upload_to='thumbnails', null=True, blank=True)
     path = models.CharField(max_length=200, blank=True, null=True)
                             
     def __str__(self):

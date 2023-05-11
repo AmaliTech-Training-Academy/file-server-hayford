@@ -10,7 +10,7 @@ def generate_thumbnail(file_path):
         img_bytes = pdf_to_image(file_path)
     else: 
         img = Image.open(file_path)
-        img.thumbnail((50, 50))
+        img.thumbnail((500, 500))
         thumb_io = BytesIO()
         img.save(thumb_io, img.format)
         img_bytes = thumb_io.getvalue()

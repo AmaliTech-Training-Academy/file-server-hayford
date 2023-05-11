@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import FileForm, SendFileForm
+from filesystem.forms import FileForm, SendFileForm
 from authentication_app.models import CustomUser
 from .thumbnails import generate_thumbnail
 from django.core.files.base import ContentFile
@@ -126,7 +126,9 @@ def preview(request, file_id):
     if file.file.name.lower().endswith('pdf'):
         return FileResponse(open(file.file.path, 'rb'), content_type='application/pdf')
     elif file.file.name.lower().endswith(('jpg','jpeg', 'png', 'gif')):
+        print(file.file.url)
         return render(request, 'filesystem/preview.html', {'file': file})
+    
     else:
         return render(request, 'filesystem/preview.html', {'file': file})
     
