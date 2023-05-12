@@ -52,7 +52,7 @@ div{
 }
 
 
-input[type="password"], input[type="email"], input{
+input[type="password"], input[type="email"],input[type="file"], input, textarea{
     padding: 12px 8px;
     font-size: 12px;
     width: 100%;

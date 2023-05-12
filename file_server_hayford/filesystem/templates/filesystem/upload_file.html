@@ -1,5 +1,17 @@
-    <form  method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{form.as_p }}
-        <input type="submit" value='upload'/>
-    </form>
+{% extends 'filesystem/base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static '/filesystem/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Upload Page</h2>
+        <form  method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.as_p }}
+            <button class="button_01" type="submit"> Upload</button>
+        </form>
+    </div>
+{% endblock %}

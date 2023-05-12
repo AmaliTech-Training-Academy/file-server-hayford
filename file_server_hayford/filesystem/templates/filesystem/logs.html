@@ -1,13 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% extends 'filesystem/base.html' %}
+{% load static %}
+
+{% block head %}
     <title>File Logs</title>
-</head>
-<body>
-    {% for file in files %}
-        <h1>{{file.title}}</h1>
-        <p>Number of Download(s): {{ file.downloads }}</p>
-        <p>Number of Email(s) Sent: {{ file.email_sent }}</p>
-    {% endfor %}
-</body>
-</html>
+    <link rel="stylesheet" href="{% static '/filesystem/index.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="main">
+        {% for file in files %}
+            <h1>{{file.title}}</h1>
+            <div>
+                <p>Number of Download(s): {{ file.downloads }}</p>
+                <p>Number of Email(s) Sent: {{ file.email_sent }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

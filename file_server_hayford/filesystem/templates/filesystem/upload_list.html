@@ -16,40 +16,40 @@
             <p><a href="{% url 'authentication_app:logout' %}">logout</a></p>
         </div>
     </div>
+    <div class="main">
+        <h1>List of files</h1>
+        <p>
+        <div>
+            {% for file in files %}
+                <p>
+                    {% if file.file.name|lower|slice:'-3:' == 'pdf' %}
+                        <img class="icon" src="{% static 'icons/pdf.png' %}">
+                    {% elif file.file.name|lower|slice:'-3:' == 'jpg' or file.file.name|lower|slice:'-3:' == 'jpeg' or file.file.name|lower|slice:'-3:' == 'png'%}
+                        <img class="icon" src="{% static 'icons/jpg.png' %}">
+                    {% elif file.file.name|lower|slice:'-3:' == 'doc' or file.file.name|lower|slice:'-3:' == 'docx' %}
+                        <img class="icon" src="{% static 'icons/text.png' %}">
+                    {% elif file.file.name|lower|slice:'-3:' == 'xls' or file.file.name|lower|slice:'-3:' == 'xlsx' %}
+                        <img class="icon" src="{% static 'icons/xls.png' %}">
+                    {% elif file.file.name|lower|slice:'-3:' == 'mp4' %}
+                        <img class="icon" src="{% static 'icons/mp4.png' %}">
+                    {% elif file.file.name|lower|slice:'-3:' == 'mp3' %}
+                        <img class="icon" src="{% static 'icons/mp3.png' %}">
+                    {% else %}
+                        <img class="icon" src="{% static 'icons/default_icon.png' %}" alt="default thumbnail">
+                    {% endif %}
+                    {% if file.file.name|lower|slice:'-3:' == 'pdf' %}
+                        <a href="{% url 'filesystem:open_page' file.id %}">{{ file.title }}</a>
+                    {% else %}
+                        <a href="{% url 'filesystem:preview' file.id %}">{{ file.title }}</a>
+                    {% endif %}
+                </p>
+            {% endfor %}
+        </div>
+    </div>
     {% if user.is_superuser %}
-        <a href="{% url 'filesystem:upload_file' %}">Upload files</a>
+        <div class="foot">
+            <a href="{% url 'filesystem:logs' %}">logs</a>
+            <a href="{% url 'filesystem:upload_file' %}">Upload files</a>
+        </div>
     {% endif %}
-    <h1>List of files</h1>
-    <p>
-    <ul>
-        {% for file in files %}
-            <li>
-                {% if file.file.name|lower|slice:'-3:' == 'pdf' %}
-                    <img src="{% static 'icons/pdf.png' %}">
-                {% elif file.file.name|lower|slice:'-3:' == 'jpg' or file.file.name|lower|slice:'-3:' == 'jpeg' or file.file.name|lower|slice:'-3:' == 'png'%}
-                    <img src="{% static 'icons/jpg.png' %}">
-                {% elif file.file.name|lower|slice:'-3:' == 'doc' or file.file.name|lower|slice:'-3:' == 'docx' %}
-                    <img src="{% static 'icons/text.png' %}">
-                {% elif file.file.name|lower|slice:'-3:' == 'xls' or file.file.name|lower|slice:'-3:' == 'xlsx' %}
-                    <img src="{% static 'icons/xls.png' %}">
-                {% elif file.file.name|lower|slice:'-3:' == 'mp4' %}
-                    <img src="{% static 'icons/mp4.png' %}">
-                {% elif file.file.name|lower|slice:'-3:' == 'mp3' %}
-                    <img src="{% static 'icons/mp3.png' %}">
-                {% else %}
-                    <img src="{% static 'icons/default_icon.png' %}" alt="default thumbnail">
-                {% endif %}
-                {% if file.file.name|lower|slice:'-3:' == 'pdf' %}
-                    <a href="{% url 'filesystem:open_page' file.id %}">{{ file.title }}</a>
-                {% else %}
-                    <a href="{% url 'filesystem:preview' file.id %}">{{ file.title }}</a>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-
-    {% if user.is_superuser %}
-        <a href="{% url 'filesystem:logs' %}">logs</a>
-    {% endif %}
-    
 {% endblock %}

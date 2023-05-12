@@ -40,14 +40,11 @@ class UserSignUp(forms.ModelForm):
         
 
 class passwordChangeForm(forms.ModelForm):
-    # password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}), label="New Password")
-    # confirmPassword = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}), label="New Confirm Password")
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}), label="New Password")
+    confirmPassword = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}), label="New Confirm Password")
     class Meta:
         model = CustomUser
         fields = []
-
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}), label="New Password")
-    confirmPassword = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}), label="New Confirm Password")
 
 class LoginForm(AuthenticationForm):
     pass

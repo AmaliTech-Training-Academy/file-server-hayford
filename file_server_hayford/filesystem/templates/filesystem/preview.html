@@ -1,9 +1,13 @@
 {% extends 'filesystem/base.html' %}
 {% load static %}
+
 {% block head %}
   <link rel="stylesheet" href="{% static '/filesystem/index.css' %}">
 {% endblock %}
+
 {% block content %}
+<div class="preview margin-top">
+    <div>
     <h1>{{ file.title }}</h1> 
     {% if file.file.name|lower|slice:'-3:' == 'jpg' or file.file.name|lower|slice:'-4:' == 'jpeg' or file.file.name|lower|slice:'-3:' == 'png' or file.file.name|lower|slice:'-3:' == 'gif'  %}
         <img width="500" height="500" src="{{ file.file.url }}" alt="{{ file.title }}">
@@ -19,20 +23,18 @@
         </audio>
     {% endif %}
 
-    <p>{{ file.description }}</p>
-    <li>
-        <button>
+    <p><label>Description of context: </label>{{ file.description }}</p>
+    <div>
+        <button class="button_01 margin-top">
             <a href="{% url 'filesystem:download_file' file_id=file.id %}">
                  Download {{ file.title }}
             </a>
         </button>
-    </li>
-    <li>
-        <button>
+        <button class="button_01 margin-top">
             <a href="{% url 'filesystem:send_file_email' file.id %}">
                 Send Email
             </a>
         </button>
-    </li>
-
+    </div>
+</div>
 {% endblock %}

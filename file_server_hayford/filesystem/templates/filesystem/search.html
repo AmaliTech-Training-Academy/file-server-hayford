@@ -14,15 +14,17 @@
             <p><a href="{% url 'authentication_app:logout' %}">logout</a></p>
         </div>
     </div>
-    {% if files %}
-        <ul>
-        {% for file in files %}
-            <li>
-                <a href="{{ file.get_absolute_url }}">{{ file.title }}</a>
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <div>No results found.</div>
-    {% endif %}
+    <div class="main">
+        <div>
+            {% if files %} 
+                {% for file in files %}
+                    <p>
+                        <a href="{{ file.get_absolute_url }}">{{ file.title }}</a>
+                    </p>
+                {% endfor %} 
+            {% else %}
+                    <p>No results found.</p>
+            {% endif %}
+        <div>
+    </div>
 {% endblock %}
