@@ -30,13 +30,6 @@ class UserSignUp(forms.ModelForm):
             user.is_active = False
             user.save()
         return user    
-
-
-# class LoginForm(forms.ModelForm):
-#     password = forms.CharField(widget=forms.PasswordInput)
-#     class Meta:
-#         model = CustomUser
-#         fields = ['email']
         
 
 class passwordChangeForm(forms.ModelForm):
@@ -49,9 +42,3 @@ class passwordChangeForm(forms.ModelForm):
 class LoginForm(AuthenticationForm):
     pass
 
-
-# class resetPassword(forms.ModelForm):
-#     email = forms.EmailField(max_length=244)
-#     class Meta:
-#         model = CustomUser
-#         fields = ['email']

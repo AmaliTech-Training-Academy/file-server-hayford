@@ -16,8 +16,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .tokens import account_activation_token
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.html import strip_tags
-from django.contrib.auth.decorators import login_required
-from. models import CustomUser
+from .models import CustomUser
 
 
 
@@ -71,7 +70,7 @@ def activate(request, uidb64, token):
 
 
 
-# @csrf_protect
+@csrf_protect
 def signin(request):
     form = LoginForm(data=request.POST)
     next_url = request.GET.get('next')
@@ -86,7 +85,6 @@ def signin(request):
                 if next_url:
                     return render(next_url)
                 else:
-                    # return render(request, 'filesystem/upload_list.html')
                     return redirect('filesystem:upload_list')
             else:
                 return render(request, 'login.html', {'form': form, 'error': 'Invalid login credentials', 'next': next_url})
@@ -127,7 +125,6 @@ def password_reset(request):
                 email = send_mail(email_subject, email_body, from_email=settings.EMAIL_HOST_USER, recipient_list=[user.email])
                 # email.send()
                 return render(request, 'authentication_app/password_reset/password_reset_done.html')
-                # return redirect('authentication_app:password_reset_done')
                 
             except CustomUser.DoesNotExist:
                 form.add_error(None, 'Email address not found, try again')
