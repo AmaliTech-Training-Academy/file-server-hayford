@@ -1,11 +1,12 @@
 from django.db import models
 from django.urls import reverse
+from .validators import file_size_validation
 
 # Create your models here.
 class FileModels(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    file = models.FileField(upload_to='files')
+    file = models.FileField(upload_to='files', validators=[file_size_validation])
     downloads = models.PositiveIntegerField(default=0)
     emails_sent = models.IntegerField(default=0)
     thumbnail = models.FileField(upload_to='thumbnails', null=True, blank=True)
