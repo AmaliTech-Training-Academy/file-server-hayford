@@ -10,6 +10,8 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from django.utils. decorators import method_decorator
 from django.views.generic import ListView, DetailView
+import os
+from django.core.paginator import Paginator
 
 
 # @login_required
@@ -36,6 +38,14 @@ def upload_file(request):
     else:
         return HttpResponseForbidden('<h1>You are not authorised to view this page</h1>')
 
+#delete method for deleting files
+def delete_upload_file(request, pk):
+    file =FileModels.objects.get(pk=pk)
+    file.delete()
+    file_path = os.path.join(settings.MEDIA_ROOT, str(file.file))
+    if os.path.exists(file_path):
+            os.remove(file_path)
+    return redirect('filesystem:upload_list')
 
 
 # @login_required
@@ -103,7 +113,11 @@ def log(request):
     user = CustomUser.objects.get(pk=request.user.pk)
     if user.is_superuser:
         files = FileModels.objects.all()
-        return render(request, 'filesystem/logs.html', {'files': files})
+        #creating of a pagination table
+        paginator = Paginator(files, 10)
+        page_number = request.GET.get('page')
+        page_obj =paginator.get_page(page_number)
+        return render(request, 'filesystem/logs.html', {'files': files, 'page_obj':page_obj})
     else:
         return HttpResponseForbidden('<h1>You are not authorised to view thsi page</h1>')
     

@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+<a href="{% url 'filesystem:upload_list' %}">Previous Page</a>
     <div>
         <h2>Upload Page</h2>
         <form  method="POST" enctype="multipart/form-data">

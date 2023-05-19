@@ -7,13 +7,39 @@
 {% endblock %}
 
 {% block content %}
+<a href="{% url 'filesystem:upload_list' %}">Previous Page</a>
     <div class="main">
-        {% for file in files %}
-            <h1>{{file.title}}</h1>
-            <div>
-                <p>Number of Download(s): {{ file.downloads }}</p>
-                <p>Number of Email(s) Sent: {{ file.email_sent }}</p>
-            </div>
+        <h1>Log of files</h1>
+        <table>
+            <tr>
+                <th>File Title</th>
+                <th>Number of Downloads</th>
+                <th>Number of Emails sent</th>
+            </tr>
+            {% for file in page_obj %}  
+            <tr>
+                <td>{{file.title}}</td>
+                <td>{{ file.downloads }}</td>
+                <td>{{ file.emails_sent }}</td>
+              </tr>
         {% endfor %}
+        </table>
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+        
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+        
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
     </div>
 {% endblock %}

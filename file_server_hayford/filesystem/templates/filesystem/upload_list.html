@@ -14,6 +14,23 @@
         <div>
             <p>Hello, <em class="user">{{ user.email }}</em></p>
             <p><a href="{% url 'authentication_app:logout' %}">logout</a></p>
+            <select name="optionlist" id="option">
+                <option value="javascript"><a href="{% url 'authentication_app:logout' %}">logout</a></option>
+                {% if user.is_superuser %}
+                <option value="python"><a href="{% url 'filesystem:logs' %}">logs</a></option>
+                <option value="c++" disabled><a href="{% url 'filesystem:upload_file' %}">Upload files</a></option>
+                {% endif %}
+              </select>
+              <div class="dropdown">
+                <button>Profile</button>
+                <div class="dropdown-options">
+                  <a href="{% url 'authentication_app:logout' %}">logout</a>
+                  {% if user.is_superuser %}
+                  <a href="{% url 'filesystem:logs' %}">logs</a>
+                  <a href="{% url 'filesystem:upload_file' %}">Upload files</a>
+                  {% endif %}
+                </div>
+              </div>
         </div>
     </div>
     <div class="main">
@@ -42,6 +59,9 @@
                     {% else %}
                         <a href="{% url 'filesystem:preview' file.id %}">{{ file.title }}</a>
                     {% endif %}
+                    <em class="button-01">
+                        <a href="{% url 'filesystem:delete_file' file.pk %}">Delete</a>
+                    </em>
                 </p>
             {% endfor %}
         </div>
