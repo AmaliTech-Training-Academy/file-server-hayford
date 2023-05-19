@@ -30,6 +30,7 @@ body{
   .dropdown-options {
     display: none;
     position: absolute;
+    top: 0;
     overflow: auto;
     background-color:#fff;
     border-radius:5px;

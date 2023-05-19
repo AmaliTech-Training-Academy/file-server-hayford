@@ -14,13 +14,6 @@
         <div>
             <p>Hello, <em class="user">{{ user.email }}</em></p>
             <p><a href="{% url 'authentication_app:logout' %}">logout</a></p>
-            <select name="optionlist" id="option">
-                <option value="javascript"><a href="{% url 'authentication_app:logout' %}">logout</a></option>
-                {% if user.is_superuser %}
-                <option value="python"><a href="{% url 'filesystem:logs' %}">logs</a></option>
-                <option value="c++" disabled><a href="{% url 'filesystem:upload_file' %}">Upload files</a></option>
-                {% endif %}
-              </select>
               <div class="dropdown">
                 <button>Profile</button>
                 <div class="dropdown-options">
