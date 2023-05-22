@@ -11,5 +11,22 @@
     {% block content %}
 
     {% endblock %}
+    <script>
+        let option = document.querySelector('.sub-options');
+        let navbutton = document.querySelector('.main-button');
+
+        navbutton.addEventListener("mouseover", ()=>{
+            option.style.display="block";
+            let anchor = option.querySelectorAll('a');
+            //console.log(anchor)
+            anchor.forEach((e)=>{
+                e.style.display="block";
+                e.style.padding="5px";
+                e.style.textDecoration="none";
+                e.style.color = "#333";
+            });
+        })
+
+    </script>
 </body>
 </html>
