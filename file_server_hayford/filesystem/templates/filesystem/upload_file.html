@@ -3,10 +3,15 @@
 
 {% block head %}
     <link rel="stylesheet" href="{% static '/filesystem/style.css' %}">
+    <link rel="stylesheet" href="{% static '/filesystem/index.css' %}">
 {% endblock %}
-
+        
 {% block content %}
-<a href="{% url 'filesystem:upload_list' %}">Previous Page</a>
+    <p class="custom-button">
+        <a href="{% url 'filesystem:upload_list' %}">
+        Previous Page
+        </a>
+    </p>
     <div>
         <h2>Upload Page</h2>
         <form  method="POST" enctype="multipart/form-data">

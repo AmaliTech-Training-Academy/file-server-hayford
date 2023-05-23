@@ -6,14 +6,12 @@
 {% endblock %}
 {% block content %}
     <div class="heading">
+        <p class="custom-button"><a href="{% url 'filesystem:upload_list' %}">Previous Page</a></p>
         <form>
-            <input type="text" placeholder="Make your search here..." name="q">
-            <input type="submit" value="Search">
+            <input class="submit-input" type="text" placeholder="Make your search here..." name="q">
+            <input class="submit-buttom" type="submit" value="Search">
         </form>   
-        <div>
-            <p><a href="{% url 'filesystem:upload_list' %}">Previous Page</a></p>
-            <p><a href="{% url 'authentication_app:logout' %}">logout</a></p>
-        </div>
+        <p class="custom-button"><a href="{% url 'authentication_app:logout' %}">logout</a></p>
     </div>
     <div class="main">
         <div>
@@ -26,6 +24,6 @@
             {% else %}
                     <p>No results found.</p>
             {% endif %}
-        <div>
+        </div>
     </div>
 {% endblock %}

@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-# from .validators import file_size_validation
 
 # Create your models here.
 class FileModels(models.Model):

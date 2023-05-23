@@ -6,7 +6,9 @@
 {% endblock %}
 
 {% block content %}
-<a href="{% url 'filesystem:upload_list' %}">Previous Page</a>
+    <div class="heading">
+        <p class="custom-button"><a href="{% url 'filesystem:upload_list' %}">Previous Page</a></p>
+    </div>
     <div class="preview margin-top">
         <div>
             <h1>{{file.title}}</h1>
@@ -16,13 +18,13 @@
             {% endif %}
             <p><label>Description of context: </label>{{ file.description }}</p>
             <div>
-                <button class="button_01 margin-top">
+                <button class="custom-button size-out">
                     <a href="{% url 'filesystem:preview' file.id %}" preview>Preview</a>
                 </button>
-                <button class="button_01 margin-top">
+                <button class="custom-button size-out">
                     <a href="{% url 'filesystem:download_file' file.id %}" download>Download</a>
                 </button>
-                <button class="button_01 margin-top">
+                <button class="custom-button size-out">
                     <a href="{% url 'filesystem:send_file_email' file.id %}" >Send Email</a>
                 </button>
             </div>

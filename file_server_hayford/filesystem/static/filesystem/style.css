@@ -60,6 +60,19 @@ a{
     color: #0047FF;
 }
 
+textarea{
+    resize: none;
+    width: 100%;
+    height: 12rem;
+}
+
 .errorlist{
     color: red;
+}
+
+/* addition of  the navigation links */
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }

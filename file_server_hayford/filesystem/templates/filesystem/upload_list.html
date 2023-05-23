@@ -11,34 +11,21 @@
             <p>Hello, <em class="user">{{ user.email }}</em></p>
         </h3>
         <div>
-            <a href="{% url 'filesystem:search' %}">Search files</a>
-            {% comment %} <div class="dropdown">
-                <button>Profile</button>
-                <div class="dropdown-options">
-                  <a href="{% url 'authentication_app:logout' %}">logout</a>
-                  {% if user.is_superuser %}
-                  <a href="{% url 'filesystem:logs' %}">logs</a>
-                  <a href="{% url 'filesystem:upload_file' %}">Upload files</a>
-                  {% endif %}
-                </div>
-            </div> {% endcomment %}
             <div class="nav-button">
                 <button class="main-button">Navigation</button>
                 <div class="sub-options">
-                    <a href="#">Option 1</a>
-                    <a href="#">Option 2</a>
-                    <a href="#">Option 3</a>
+                    <a href="{% url 'filesystem:search' %}">Search files</a>
+                    <a href="{% url 'authentication_app:logout' %}">logout</a>
+                    {% if user.is_superuser %}
+                        <a href="{% url 'filesystem:logs' %}">logs</a>
+                        <a href="{% url 'filesystem:upload_file' %}">Upload files</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
     <div class="SuperAdmin">
-        {% if user.is_superuser %}
-            <div>
-                <a href="{% url 'filesystem:logs' %}">logs</a> |
-                <a href="{% url 'filesystem:upload_file' %}">Upload files</a>
-            </div>
-        {% endif %}
+        
     </div>
     <div class="main">
         <h1>List of files</h1>
