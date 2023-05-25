@@ -1,7 +1,20 @@
 {% extends 'filesystem/base.html' %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static '/filesystem/index.css' %}">
+{% endblock %}
 
 {% block content %}
-    <h1>{{file.title}}</h1>
-    <p>Description: {{file.Description }}</p>
-    <a href="{% url 'filesystem:open_page' file.id %}">Download file</a>
+    <div class="heading">
+        <p class="custom-button"><a href="{% url 'filesystem:search' %}">Previous Page</a></p>
+    </div>
+    <div class="main">
+        <h1>Search File Description</h1>
+        <div>
+            <h2>&#35; {{file.title}}</h2>
+            <p>Description: {{file.description }}</p>
+            <a class="custom-button" href="{% url 'filesystem:open_page' file.id %}">Download file</a>
+        </div>
+    </div>
 {% endblock %}

@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserSignUp, LoginForm, UserSignUp, passwordChangeForm   #dev'ing of models  
+from .forms import UserSignUp, LoginForm, UserSignUp, passwordChangeForm  
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from django.core.mail import send_mail       #dev'ing of models
+from django.core.mail import send_mail    
 from django.contrib.auth.forms import PasswordResetForm
 from django.template.loader import render_to_string
 from django.db.models.query_utils import Q

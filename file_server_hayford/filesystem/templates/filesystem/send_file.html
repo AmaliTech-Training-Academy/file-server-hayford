@@ -1,12 +1,22 @@
 {% extends 'filesystem/base.html' %}
+{% load static %}
 
+{% block head %}
+    <link rel="stylesheet" href="{% static '/filesystem/style.css' %}">
+    <link rel="stylesheet" href="{% static '/filesystem/index.css' %}">
+{% endblock %}
+        
 {% block content %}
-<h1>Send File</h1>
+    <p class="custom-button">
+        <a href="{% url 'filesystem:upload_list' %}">
+        Previous Page
+        </a>
+    </p>
+    <div>
+    <h2>Send File</h2>
     <form method="POST">
         {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
-        <input type="submit" value="Send">
+        {{ form.as_p }}
+        <input class="custom-button" type="submit" value="Send">
     </form>
 {% endblock %}

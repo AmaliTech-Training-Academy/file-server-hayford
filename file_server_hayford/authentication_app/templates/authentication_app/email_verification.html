@@ -1,2 +1,16 @@
-<h1>Email verification</h1>
-<p>A verification email has been sent to your email address. Please follow the link in the email to activate your account.</p>
+{% extends 'filesystem/base.html' %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static '/filesystem/index.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="heading">
+        <p class="custom-button"><a href="{% url 'filesystem:search' %}">Previous Page</a></p>
+    </div>
+    <div class="main">
+        <h1>Email verification</h1>
+        <p>A verification email has been sent to your email address. Please follow the link in the email to activate your account.</p>
+    </div>
+{% endblock %}
