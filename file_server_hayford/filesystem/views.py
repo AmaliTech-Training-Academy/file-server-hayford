@@ -91,7 +91,7 @@ class FileListView(ListView):
     template_name = 'filesystem/upload_list.html'
     context_object_name = 'files'
     ordering = ['title']
-    paginate_by = 20
+    paginate_by = 10
 
 
 

@@ -63,7 +63,7 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        return redirect('/')
+        return redirect('/login/')
         
     else:
         return render(request, 'authentication_app/activation_404.html')
