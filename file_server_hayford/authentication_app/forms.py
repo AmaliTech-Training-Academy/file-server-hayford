@@ -16,10 +16,8 @@ class UserSignUp(forms.ModelForm):
         password2 = self.cleaned_data.get('password2')
         if password and password2 and password != password2:
             raise forms.ValidationError('Passwords do not match')
-            
         validator = PasswordValidator()
         validator.validate(password)
-        
         return password
     
 #function to set user to false until account is verified
